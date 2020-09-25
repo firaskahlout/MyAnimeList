@@ -8,12 +8,24 @@
 import SwiftUI
 
 struct TopAnimeView: View {
+    
+    // MARK: Properties
+    
+    @ObservedObject var viewModel = TopAnimeViewModel()
+    
+    // MARK: Body
+    
     var body: some View {
-        Text("")
+        List(self.viewModel.animes, id: \.self) { item in
+            Text(item.title)
+        }
+        .onAppear { viewModel.onAppear() }
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
+// MARK: - TopAnimeView_Previews
+
+struct TopAnimeView_Previews: PreviewProvider {
     static var previews: some View {
         TopAnimeView()
     }
