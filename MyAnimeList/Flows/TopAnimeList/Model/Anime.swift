@@ -14,18 +14,24 @@ struct TopAnime: Codable {
 
 struct Anime: Codable, Hashable {
     let mal_id: Int
-    let url: String?
-    let image_url: String?
+    let url: String
+    let image_url: String
     let title: String
     let airing: Bool?
     let synopsis: String?
-    let type: String?
-    let episodes: Int?
-    let score: Float?
-    let start_date: String?
-    let end_date: String?
-    let members: Int?
+    let type: AnimeType
+    let episodes: Int
+    let score: Double
+    let start_date: String
+    let end_date: String
+    let members: Int
     let rated: String?
+    
+    enum AnimeType: String, Codable {
+        case tv = "TV"
+        case ova = "OVA"
+        case movie = "Movie"
+    }
 }
 
 // MARK: - Anime.Example
@@ -40,11 +46,11 @@ extension Anime {
             title: "One Piece",
             airing: true,
             synopsis: "Gol D. Roger was known as the \"Pirate King,\" the strongest and most infamous being to have sailed the Grand Line. The capture and execution of Roger by the World Government brought a change throughout...",
-            type: "TV",
+            type: .tv,
             episodes: 0,
             score: 8.43,
-            start_date: "1999-10-20T00:00:00+00:00",
-            end_date: nil,
+            start_date: "Sep 1999",
+            end_date: "Sep 1999",
             members: 1115140,
             rated: "PG-13"
         )
