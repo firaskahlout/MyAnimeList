@@ -12,7 +12,7 @@ final class TopAnimeViewModel: ObservableObject {
     
     // MARK: Properties
     
-    @Published var animes: [Anime] = [.example, .example]
+    @Published var animes: [AnimeItem] = [.init(model: .example)]
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: LifeCycle
@@ -22,7 +22,7 @@ final class TopAnimeViewModel: ObservableObject {
             .sink { [weak self] result in
                 switch result {
                 case let .success(value):
-                    self?.animes = value.top
+                    self?.animes = value.top.map { AnimeItem(model: $0) }
                 case let .failure(error):
                     print(error.localizedDescription)
                 }

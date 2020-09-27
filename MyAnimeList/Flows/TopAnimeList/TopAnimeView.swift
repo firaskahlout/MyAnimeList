@@ -11,15 +11,24 @@ struct TopAnimeView: View {
     
     // MARK: Properties
     
-    @ObservedObject var viewModel = TopAnimeViewModel()
+    @ObservedObject
+    private var viewModel = TopAnimeViewModel()
     
     // MARK: Body
     
     var body: some View {
-        List(self.viewModel.animes, id: \.self) { item in
-            Text(item.title)
+        NavigationView {
+            ScrollView {
+                LazyVStack {
+                    ForEach(self.viewModel.animes, id: \.self) { anime in
+                        AnimeRow(anime: anime)
+                            .padding(8)
+                    }
+                }
+                .onAppear { viewModel.onAppear() }
+            }
+            .navigationTitle("Top Anime")
         }
-        .onAppear { viewModel.onAppear() }
     }
 }
 
