@@ -21,8 +21,10 @@ struct TopAnimeView: View {
             ScrollView {
                 LazyVStack {
                     ForEach(self.viewModel.animes, id: \.self) { anime in
-                        AnimeRow(anime: anime)
-                            .padding(8)
+                        NavigationLink(destination: AnimeDetailsView(anime: anime)) {
+                            AnimeRow(anime: anime)
+                                .padding(8)
+                        }.buttonStyle(PlainButtonStyle())
                     }
                 }
                 .onAppear { viewModel.onAppear() }

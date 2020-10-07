@@ -21,8 +21,8 @@ struct AnimeItem: Hashable {
         self.title = model.title
         self.url = model.url
         self.imageUrl = model.image_url
-        self.startDate = model.start_date
-        self.endDate = model.end_date
+        self.startDate = model.start_date.defaultIfEmpty
+        self.endDate = model.end_date.defaultIfEmpty
     }
     
     var episodes: String {
