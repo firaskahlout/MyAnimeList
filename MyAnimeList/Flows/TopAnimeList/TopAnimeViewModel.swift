@@ -12,19 +12,21 @@ final class TopAnimeViewModel: ObservableObject {
     
     // MARK: Properties
     
-    @Published var animes: [AnimeItem] = [.init(model: .example)]
+    @Published var state: ListState<AnimeItem> = .populated([.init(model: .example)])
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: LifeCycle
     
     func onAppear() {
+        state = .loading
         AnimeUseCase().loadTopAnimes()
             .sink { [weak self] result in
                 switch result {
                 case let .success(value):
-                    self?.animes = value.top.map { AnimeItem(model: $0) }
+                    let items = value.top.map { AnimeItem(model: $0) }
+                    self?.state = .populated(items)
                 case let .failure(error):
-                    print(error.localizedDescription)
+                    self?.state = .error(error.localizedDescription)
                 }
             }.store(in: &cancellables)
     }

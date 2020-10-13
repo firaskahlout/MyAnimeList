@@ -17,7 +17,7 @@ final class AnimeDetailsViewModel: ObservableObject {
     private let animeId: Int
     private let useCase = AnimeUseCase()
     @Published var anime: Anime = .example
-    @Published var episodes: [Episode] = [.example]
+    @Published var episodesState: ListState<Episode> = .populated([.example])
     private var cancellables = Set<AnyCancellable>()
     
     // MARK: Init
@@ -56,13 +56,14 @@ private extension AnimeDetailsViewModel {
     }
     
     func loadEpisodes() {
+        episodesState = .loading
         useCase.loadEpisodes(for: animeId)
             .sink { [weak self] result in
                 switch result {
                 case let .success(value):
-                    self?.episodes = value.episodes
+                    self?.episodesState = .populated(value.episodes)
                 case let .failure(error):
-                    print(error.localizedDescription)
+                    self?.episodesState = .error(error.localizedDescription)
                 }
             }.store(in: &cancellables)
     }

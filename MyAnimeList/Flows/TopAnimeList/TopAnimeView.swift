@@ -18,19 +18,26 @@ struct TopAnimeView: View {
     
     var body: some View {
         NavigationView {
-            ScrollView {
-                LazyVStack {
-                    ForEach(self.viewModel.animes, id: \.self) { anime in
-                        NavigationLink(destination: AnimeDetailsView(anime: anime)) {
-                            AnimeRow(anime: anime)
-                                .padding(8)
-                        }.buttonStyle(PlainButtonStyle())
+            Group {
+                if case let .error(error) = self.viewModel.state {
+                    ReloadView(message: error, handler: { viewModel.onAppear() })
+                } else if case .loading = self.viewModel.state {
+                    ProgressView("Loading..")
+                } else {
+                    ScrollView {
+                        LazyVStack {
+                            ForEach(self.viewModel.state.items, id: \.self) { anime in
+                                NavigationLink(destination: AnimeDetailsView(anime: anime)) {
+                                    AnimeRow(anime: anime)
+                                        .padding(8)
+                                }.buttonStyle(PlainButtonStyle())
+                            }
+                        }
                     }
                 }
-                .onAppear { viewModel.onAppear() }
             }
             .navigationTitle("Top Anime")
-        }
+        }.onAppear { viewModel.onAppear() }
     }
 }
 
