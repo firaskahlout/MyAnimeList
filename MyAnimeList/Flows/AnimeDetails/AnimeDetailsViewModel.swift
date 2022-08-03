@@ -48,7 +48,7 @@ private extension AnimeDetailsViewModel {
             .sink { [weak self] result in
                 switch result {
                 case let .success(value):
-                    self?.anime = value
+                    self?.anime = value.data
                 case let .failure(error):
                     print(error.localizedDescription)
                 }
@@ -61,8 +61,9 @@ private extension AnimeDetailsViewModel {
             .sink { [weak self] result in
                 switch result {
                 case let .success(value):
-                    self?.episodesState = .populated(value.episodes)
+                    self?.episodesState = .populated(value.data)
                 case let .failure(error):
+                    print(error)
                     self?.episodesState = .error(error.localizedDescription)
                 }
             }.store(in: &cancellables)

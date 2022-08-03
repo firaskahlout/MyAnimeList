@@ -20,9 +20,9 @@ struct AnimeItem: Hashable {
         self.model = model
         self.title = model.title
         self.url = model.url
-        self.imageUrl = model.image_url
-        self.startDate = model.start_date.defaultIfEmpty
-        self.endDate = model.end_date.defaultIfEmpty
+        self.imageUrl = model.images.jpg.image_url.defaultIfEmpty
+        self.startDate = model.aired.prop.from.year.defaultValue.string
+        self.endDate = model.aired.to.defaultIfEmpty
     }
     
     var episodes: String {
@@ -42,6 +42,8 @@ struct AnimeItem: Hashable {
         case .tv:
             return .red
         case .ova:
+            return .yellow
+        case .ona:
             return .yellow
         case .movie:
             return .blue

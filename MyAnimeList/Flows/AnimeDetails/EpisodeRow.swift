@@ -12,7 +12,7 @@ struct EpisodeRow: View {
     let episode: Episode
     var body: some View {
         HStack(spacing: 12) {
-            Text(episode.episode_id.string)
+            Text(episode.mal_id.string)
                 .font(.headline)
                 .foregroundColor(.white)
                 .frame(minWidth: 55, maxHeight: 24)

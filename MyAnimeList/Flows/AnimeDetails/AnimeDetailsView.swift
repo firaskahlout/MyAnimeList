@@ -63,7 +63,7 @@ struct AnimeDetailsView: View {
                                         .padding(.vertical, 6)
                             ) {
                                 ForEach(self.viewModel.episodesState.items, id: \.self) { episode in
-                                    Link(destination: URL(string: episode.video_url)!) {
+                                    Link(destination: URL(string: episode.url)!) {
                                         EpisodeRow(episode: episode)
                                     }.buttonStyle(PlainButtonStyle())
                                 }
