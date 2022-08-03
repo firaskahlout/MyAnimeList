@@ -12,9 +12,12 @@ struct WebImage: View {
     @State private var imageData: Data = .init()
     
     var body: some View {
-        Image(uiImage: ((imageData.count == 0) ? UIImage(systemName: "photo")! : UIImage(data: imageData))!)
-            .resizable()
-            .onAppear { self.loadImage() }
+        if imageData.count == 0 {
+            ProgressView().onAppear { self.loadImage() }
+        } else {
+            Image(uiImage: UIImage(data: imageData)!)
+                .resizable()
+        }
     }
     
     private func loadImage() {
@@ -30,6 +33,6 @@ struct WebImage: View {
 
 struct WebImage_Previews: PreviewProvider {
     static var previews: some View {
-        WebImage(url: Anime.example.image_url)
+        WebImage(url: Anime.example.images.jpg.large_image_url.defaultIfEmpty)
     }
 }

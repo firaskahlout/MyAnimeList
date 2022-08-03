@@ -23,9 +23,10 @@ final class TopAnimeViewModel: ObservableObject {
             .sink { [weak self] result in
                 switch result {
                 case let .success(value):
-                    let items = value.top.map { AnimeItem(model: $0) }
+                    let items = value.data.map { AnimeItem(model: $0) }
                     self?.state = .populated(items)
                 case let .failure(error):
+                    print(error)
                     self?.state = .error(error.localizedDescription)
                 }
             }.store(in: &cancellables)

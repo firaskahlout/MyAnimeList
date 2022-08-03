@@ -15,16 +15,16 @@ struct TopAnime: Codable {
 struct Anime: Codable, Hashable {
     let mal_id: Int
     let url: String
-    let image_url: String
+    let images: AnimeImages
     let title: String
     let airing: Bool?
+    let aired: Aired
     let type: AnimeType
     let score: Double
     let members: Int?
     let episodes: Int
-    let start_date: String?
-    let end_date: String?
     let rated: String?
+    let trailer: Trailer
     
     // MARK: Details
     
@@ -36,7 +36,52 @@ struct Anime: Codable, Hashable {
     enum AnimeType: String, Codable {
         case tv = "TV"
         case ova = "OVA"
+        case ona = "ONA"
         case movie = "Movie"
+    }
+}
+
+extension Anime {
+    struct Aired: Codable, Hashable {
+        let from: String
+        let to: String?
+        let prop: Prop
+        let string: String
+    }
+    
+    struct Prop: Codable, Hashable {
+        let from: DateModel
+        let to: DateModel
+    }
+    
+    struct DateModel: Codable, Hashable {
+        let day: Int?
+        let month: Int?
+        let year: Int?
+    }
+}
+
+extension Anime {
+    struct AnimeImages: Codable, Hashable {
+        let jpg: Image
+        let webp: Image
+        
+        struct Image: Codable, Hashable {
+            let image_url: String?
+            let small_image_url: String?
+            let medium_image_url: String? = nil
+            let large_image_url: String?
+            let maximum_image_url: String? = nil
+        }
+    }
+}
+
+extension Anime {
+    struct Trailer: Codable, Hashable {
+        let youtube_id: String?
+        let url: String?
+        let embed_url: String?
+        let images: AnimeImages.Image?
     }
 }
 
@@ -48,16 +93,44 @@ extension Anime {
         .init(
             mal_id: 21,
             url: "https://myanimelist.net/anime/21/One_Piece",
-            image_url: "https://cdn.myanimelist.net/images/anime/6/73245.jpg?s=f792b8c9e28534ae455d06b15e686a14",
+            images: .init(
+                jpg: .init(
+                    image_url: "https://cdn.myanimelist.net/images/anime/1223/96541.jpg",
+                    small_image_url: "https://cdn.myanimelist.net/images/anime/1223/96541t.jpg",
+                    large_image_url: "https://cdn.myanimelist.net/images/anime/1223/96541l.jpg"
+                ),
+                webp: .init(
+                    image_url: "https://cdn.myanimelist.net/images/anime/1223/96541.webp",
+                    small_image_url: "https://cdn.myanimelist.net/images/anime/1223/96541t.webp",
+                    large_image_url: "https://cdn.myanimelist.net/images/anime/1223/96541l.webp"
+                )
+            ),
             title: "One Piece",
             airing: true,
+            aired: .init(
+                from: "2009-04-05T00:00:00+00:00",
+                to: "2010-07-04T00:00:00+00:00",
+                prop: .init(
+                    from: .init(day: 5, month: 4, year: 2009),
+                    to: .init(day: 4, month: 7, year: 2010)
+                ),
+                string: "Apr 5, 2009 to Jul 4, 2010"
+            ),
             type: .tv,
             score: 8.43,
             members: 1115140,
             episodes: .zero,
-            start_date: "Sep 1999",
-            end_date: "Sep 1999",
             rated: "PG-13",
+            trailer: .init(
+                youtube_id: "--IcmZkvL0Q",
+                url: "https://www.youtube.com/watch?v=--IcmZkvL0Q",
+                embed_url: "https://www.youtube.com/watch?v=--IcmZkvL0Q?enablejsapi=1&wmode=opaque&autoplay=1",
+                images: .init(
+                    image_url: "https://img.youtube.com/vi/--IcmZkvL0Q/default.jpg",
+                    small_image_url: "https://img.youtube.com/vi/--IcmZkvL0Q/sddefault.jpg",
+                    large_image_url: "https://img.youtube.com/vi/--IcmZkvL0Q/hqdefault.jpg"
+                )
+            ),
             trailer_url: "https://www.youtube.com/embed/27OZc-ku6is?enablejsapi=1&;amp;wmode=opaque&amp;autoplay=1",
             rating: "PG-13 - Teens 13 or older",
             duration: "24 min per ep",

@@ -17,3 +17,14 @@ extension Optional where Wrapped == String {
         }
     }
 }
+
+extension Optional where Wrapped == Int {
+    var defaultValue: Int {
+        switch self {
+        case let .some(value):
+            return value
+        case .none:
+            return 0
+        }
+    }
+}
